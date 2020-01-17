@@ -41,7 +41,6 @@ function infix(root: RBNode, order = [0]) {
 export default function visualize(n: RBNode, format: FormatFunc, size: SizeFunc) {
   infix(n);
   const maxWidth = getMaxWidthNode(n, size);
-  console.log(maxWidth);
   let prevEl;
   let queue = [n];
   let ls = [];
