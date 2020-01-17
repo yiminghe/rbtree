@@ -9,7 +9,7 @@ export class RBNode {
   right: RBNode;
   color: RBColor;
   val: any;
-  key: number;
+  key: any;
   order: number;
 
   constructor() {

@@ -42,10 +42,14 @@ console.log(tree.find(11)) // => 'b'
 
 ### methods
 
-#### insert(key:number,value:any)
+### constructor(sorter:(aKey, bKey)=>number)
 
-#### delete(key:number)
+key sort function. aKey>bKey:1, aKey==bKey:0, aKey<bKey:-1
 
-#### find(key:number)
+#### insert(key:any,value:any)
+
+#### delete(key:any)
+
+#### find(key:any)
 
 find value associated with this key

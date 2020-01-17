@@ -8,11 +8,21 @@ function isNil(n: RBNode | null): boolean {
   return !!(n && n.key === null);
 }
 
+function defaultSorter(a: any, b: any) {
+  return a - b;
+}
+
+export interface SorterFunc {
+  (a: any, b: any): number;
+}
+
 class RBTree {
   root: RBNode;
+  sorter: SorterFunc;
 
-  constructor() {
+  constructor(sorter: SorterFunc = defaultSorter) {
     this.root = this.newNil();
+    this.sorter = sorter;
   }
 
   getBlackCount(): number {
@@ -26,10 +36,10 @@ class RBTree {
   }
 
   checkNode(n: RBNode) {
-    if (!isNil(n.left) && n.left.key >= n.key) {
+    if (!isNil(n.left) && this._gtekey(n.left.key, n.key)) {
       throw new Error('invalid sort: ' + n.key);
     }
-    if (!isNil(n.right) && n.right.key < n.key) {
+    if (!isNil(n.right) && this._ltkey(n.right.key, n.key)) {
       throw new Error('invalid key: ' + n.key);
     }
     if (n.color === RBColor.RED) {
@@ -100,7 +110,7 @@ class RBTree {
     x.parent = y;
   }
 
-  insert(key: number, val: any) {
+  insert(key: any, val: any) {
     const n = this.newNode();
     n.key = key;
     n.val = val;
@@ -113,9 +123,10 @@ class RBTree {
     x = this.root;
     while (!isNil(x)) {
       y = x;
-      if (z.key === x.key) {
-        throw new Error('duplicated key: ' + z.key);
-      } else if (z.key < x.key) {
+      if (this._eqkey(z.key, x.key)) {
+        x.val = z.val;
+        return;
+      } else if (this._ltkey(z.key, x.key)) {
         x = x.left;
       } else {
         x = x.right;
@@ -124,7 +135,7 @@ class RBTree {
     z.parent = y;
     if (isNil(y)) {
       this.root = z;
-    } else if (z.key < y.key) {
+    } else if (this._ltkey(z.key, y.key)) {
       y.left = z;
     } else {
       y.right = z;
@@ -179,15 +190,35 @@ class RBTree {
     return p;
   }
 
-  findNode(key: number) {
+  _ltkey(a: any, b: any) {
+    return this.sorter(a, b) < 0;
+  }
+
+  _ltekey(a: any, b: any) {
+    return this.sorter(a, b) <= 0;
+  }
+
+  _gtkey(a: any, b: any) {
+    return this.sorter(a, b) > 0;
+  }
+
+  _gtekey(a: any, b: any) {
+    return this.sorter(a, b) >= 0;
+  }
+
+  _eqkey(a: any, b: any) {
+    return this.sorter(a, b) === 0;
+  }
+
+  findNode(key: any) {
     let ret;
     let n = this.root;
     while (!isNil(n)) {
-      if (n.key === key) {
+      if (this._eqkey(n.key, key)) {
         ret = n;
         break;
       }
-      if (n.key > key) {
+      if (this._gtkey(n.key, key)) {
         n = n.left;
       } else {
         n = n.right;
@@ -196,14 +227,14 @@ class RBTree {
     return ret;
   }
 
-  find(key: number) {
+  find(key: any) {
     const node = this.findNode(key);
     if (node) {
       return node.val;
     }
   }
 
-  delete(key: number) {
+  delete(key: any) {
     const node = this.findNode(key);
     if (node) {
       this.deleteNode(node);
