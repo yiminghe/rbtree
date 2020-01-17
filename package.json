@@ -38,7 +38,8 @@
   "jest": {
     "collectCoverageFrom": [
       "src/*"
-    ]
+    ],
+    "testRegex": "/__tests__/.*\\.spec\\.jsx?$"
   },
   "bugs": {
     "url": "http://github.com/yiminghe/rbtree/issues"
@@ -67,6 +68,7 @@
     "@pika/plugin-standard-pkg": "^0.6.0",
     "@pika/types": "^0.6.0",
     "babel-jest": "^24.8.0",
+    "chalk": "^3.0.0",
     "coveralls": "^2.13.1",
     "jest": "^24.8.0",
     "lint-staged": "^7.2.0",

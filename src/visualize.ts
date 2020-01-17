@@ -50,12 +50,12 @@ export default function visualize(n: RBNode, format: FormatFunc, size: SizeFunc)
     const nq = [];
     for (const currentElement of queue) {
       if (!prevEl) {
-        l += (paddingSpace('', maxWidth).repeat(currentElement.order - 1));
+        l += (' '.repeat(maxWidth).repeat(currentElement.order - 1));
       } else {
-        l += (paddingSpace('', maxWidth).repeat(currentElement.order - prevEl.order - 1));
+        l += (' '.repeat(maxWidth).repeat(currentElement.order - prevEl.order - 1));
       }
       prevEl = currentElement;
-      l += (paddingSpace(format(currentElement), maxWidth));
+      l += ' '.repeat(maxWidth - size(currentElement)) + format(currentElement);
       if (currentElement.left) {
         nq.push(currentElement.left);
       }
