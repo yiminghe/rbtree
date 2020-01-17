@@ -50,6 +50,10 @@ key sort function. aKey>bKey:>0, aKey==bKey:0, aKey<bKey:<0, sorter defaults to:
 
 #### delete(key:any)
 
+#### has(key:any):boolean
+
+check whether tree has key node
+
 #### find(key:any)
 
 find value associated with this key

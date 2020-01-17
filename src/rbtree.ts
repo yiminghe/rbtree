@@ -227,6 +227,10 @@ class RBTree {
     return ret;
   }
 
+  has(key: any) {
+    return !!this.findNode(key);
+  }
+
   find(key: any) {
     const node = this.findNode(key);
     if (node) {
