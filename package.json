@@ -1,6 +1,6 @@
 {
   "name": "@yiminghe/rbtree",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "red-black-tree",
   "homepage": "http://github.com/yiminghe/rbtree",
   "author": "yiminghe@gmail.com",
@@ -37,7 +37,7 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/*"
+      "src/*"shsh
     ],
     "testRegex": "/__tests__/.*\\.spec\\.jsx?$"
   },
