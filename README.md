@@ -17,7 +17,7 @@ red-black tree
 [coveralls-url]: https://coveralls.io/r/yiminghe/rbtree?branch=master
 [gemnasium-image]: http://img.shields.io/gemnasium/yiminghe/rbtree.svg?style=flat-square
 [gemnasium-url]: https://gemnasium.com/yiminghe/rbtree
-[node-image]: https://img.shields.io/badge/node.js-%3E=4.0.0-green.svg?style=flat-square
+[node-image]: https://img.shields.io/badge/node.js-%3E=10.0.0-green.svg?style=flat-square
 [node-url]: http://nodejs.org/download/
 [download-image]: https://img.shields.io/npm/dm/@yiminghe/rbtree.svg?style=flat-square
 [download-url]: https://npmjs.org/package/@yiminghe/rbtree
