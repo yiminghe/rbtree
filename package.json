@@ -1,6 +1,6 @@
 {
   "name": "@yiminghe/rbtree",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "red-black-tree",
   "homepage": "http://github.com/yiminghe/rbtree",
   "author": "yiminghe@gmail.com",
@@ -86,7 +86,5 @@
   "pre-commit": [
     "lint-staged"
   ],
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }
