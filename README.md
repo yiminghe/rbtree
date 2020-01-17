@@ -44,7 +44,7 @@ console.log(tree.find(11)) // => 'b'
 
 ### constructor(sorter:(aKey, bKey)=>number)
 
-key sort function. aKey>bKey:1, aKey==bKey:0, aKey<bKey:-1
+key sort function. aKey>bKey:1, aKey==bKey:0, aKey<bKey:-1, sorter defaults to: (a,b)=>a-b;
 
 #### insert(key:any,value:any)
 
