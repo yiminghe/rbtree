@@ -1,5 +1,5 @@
 import RBTree from './rbtree';
-import { RBColor } from './rbnode';
+import { RBColor, RBNode } from './rbnode';
 
-export { RBColor };
+export { RBColor, RBNode };
 export default RBTree;

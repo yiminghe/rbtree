@@ -42,9 +42,10 @@ console.log(tree.find(11)) // => 'b'
 
 ### methods
 
-### constructor(sorter:(aKey, bKey)=>number)
+### constructor(sorter:(aKey, bKey)=>number, merger:(aVal,bVal)=>any)
 
-key sort function. aKey>bKey:>0, aKey==bKey:0, aKey<bKey:<0, sorter defaults to: (a,b)=>a-b;
+sort function: aKey>bKey:>0, aKey==bKey:0, aKey<bKey:<0, sorter defaults to: (a,b)=>a-b;
+merger function: how to merge val when key is the same, defaults to override with new val
 
 #### insert(key:any,value:any)
 
@@ -57,3 +58,11 @@ check whether tree has key node
 #### find(key:any)
 
 find value associated with this key
+
+#### lowerBound(key:any)
+
+find val by lower bound
+
+#### upperBound(key:any)
+
+find val by upper bound

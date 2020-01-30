@@ -1,4 +1,4 @@
-import RBTree, { RBColor } from '../src/';
+import RBTree, { RBColor, RBNode } from '../src';
 const { RED } = RBColor;
 import chalk from 'chalk';
 
@@ -9,7 +9,7 @@ import chalk from 'chalk';
 
   function format(n) {
     const content = n.key || '*';
-    return n.color === RED ? chalk.red(content+'') : (content + '');
+    return n.color === RED ? chalk.red(content + '') : (content + '');
   }
 
   function size(n) {
@@ -24,13 +24,28 @@ import chalk from 'chalk';
   tree.insert(17);
   tree.insert(15);
   tree.insert(13);
-  tree.insert(11,'11');
+  tree.insert(11, '11');
   tree.insert(8);
   tree.insert(6);
   tree.insert(1);
 
   console.log(tree.find(11));
 
+  let n: RBNode = tree.findNode(1);
+  let n1 = n;
+  console.log('node iterator:');
+  while (n) {
+    console.log(n.key);
+    n = n.getNext();
+  }
+  console.log('node iterator end');
+
+  console.log('lowerBoundNode:', tree.lowerBoundNode(9).key)
+  console.log('upperBoundNode', tree.upperBoundNode(9).key)
+
+  let n15: RBNode = tree.findNode(15);
+
+  console.log('distance', n1.distance(n15));
   // tree.delete(11);
   // tree.delete(15);
   // tree.delete(22);

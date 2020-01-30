@@ -3,6 +3,12 @@ export enum RBColor {
   BLACK
 }
 
+export type RBNodeOrNull = RBNode | null;
+
+export function isNodeNil(n: RBNodeOrNull): boolean {
+  return !!(n && n.key === null);
+}
+
 export class RBNode {
   parent: RBNode;
   left: RBNode;
@@ -10,7 +16,6 @@ export class RBNode {
   color: RBColor;
   val: any;
   key: any;
-  order: number;
 
   constructor() {
     this.parent = null as any;
@@ -19,7 +24,6 @@ export class RBNode {
     this.color = RBColor.RED;
     this.val = null;
     this.key = null as any;
-    this.order = -1;
   }
 
   isLeftNode(): boolean {
@@ -37,5 +41,32 @@ export class RBNode {
       --level;
     }
     return p;
+  }
+
+  getNext(): RBNodeOrNull {
+    let n = this.right;
+    if (!isNodeNil(n)) {
+      while (!isNodeNil(n.left)) {
+        n = n.left;
+      }
+    } else {
+      let p: RBNode = this;
+      n = p.parent;
+      while (!isNodeNil(n) && n.right === p) {
+        p = n;
+        n = n.parent;
+      }
+    }
+    return !isNodeNil(n) ? n : null;
+  }
+
+  distance(node: RBNode):number {
+    let n:RBNodeOrNull = this;
+    let ret = 0;
+    while (n && n !== node) {
+      n = n.getNext();
+      ++ret;
+    }
+    return n === node ? ret : -1;
   }
 }

@@ -1,12 +1,8 @@
 // https://github.com/julycoding/The-Art-Of-Programming-By-July/blob/master/ebook/zh/03.01.md
 // https://www.jianshu.com/p/e136ec79235c
 
-import { RBColor, RBNode } from './rbnode';
+import { RBColor, RBNode, isNodeNil, RBNodeOrNull } from './rbnode';
 import visualize, { FormatFunc, SizeFunc } from './visualize';
-
-function isNil(n: RBNode | null): boolean {
-  return !!(n && n.key === null);
-}
 
 function defaultSorter(a: any, b: any) {
   return a - b;
@@ -16,17 +12,23 @@ export interface SorterFunc {
   (a: any, b: any): number;
 }
 
+export interface MergerFunc {
+  (a: any, b: any): any;
+}
+
 class RBTree {
   root: RBNode;
   sorter: SorterFunc;
+  merger?: MergerFunc;
 
-  constructor(sorter: SorterFunc = defaultSorter) {
+  constructor(sorter: SorterFunc = defaultSorter, merger?: MergerFunc) {
     this.root = this.newNil();
-    this.sorter = sorter;
+    this.sorter = sorter||defaultSorter;
+    this.merger = merger;
   }
 
   getBlackCount(): number {
-    if (isNil(this.root)) {
+    if (isNodeNil(this.root)) {
       return 0;
     }
     if (this.root.color !== RBColor.BLACK) {
@@ -36,26 +38,26 @@ class RBTree {
   }
 
   checkNode(n: RBNode) {
-    if (!isNil(n.left) && this._gtekey(n.left.key, n.key)) {
+    if (!isNodeNil(n.left) && this._gtekey(n.left.key, n.key)) {
       throw new Error('invalid sort: ' + n.key);
     }
-    if (!isNil(n.right) && this._ltkey(n.right.key, n.key)) {
+    if (!isNodeNil(n.right) && this._ltkey(n.right.key, n.key)) {
       throw new Error('invalid key: ' + n.key);
     }
     if (n.color === RBColor.RED) {
-      if (!isNil(n.left) && n.left.color !== RBColor.BLACK) {
+      if (!isNodeNil(n.left) && n.left.color !== RBColor.BLACK) {
         throw new Error('invalid left color: ' + n.key);
       }
-      if (!isNil(n.right) && n.right.color !== RBColor.BLACK) {
+      if (!isNodeNil(n.right) && n.right.color !== RBColor.BLACK) {
         throw new Error('invalid right color: ' + n.key);
       }
     }
     const myCount = n.color === RBColor.BLACK ? 1 : 0;
-    if (isNil(n.left) && isNil(n.right)) {
+    if (isNodeNil(n.left) && isNodeNil(n.right)) {
       return myCount;
     }
-    const leftCount: number = isNil(n.left) ? 0 : this.checkNode(n.left);
-    const rightCount: number = isNil(n.right) ? 0 : this.checkNode(n.right);
+    const leftCount: number = isNodeNil(n.left) ? 0 : this.checkNode(n.left);
+    const rightCount: number = isNodeNil(n.right) ? 0 : this.checkNode(n.right);
     if (leftCount !== rightCount) {
       throw new Error('invalid count: ' + n.key + ` (${leftCount}:${rightCount})`);
     }
@@ -83,7 +85,7 @@ class RBTree {
     x.right = y.left;
     y.left.parent = x;
     y.parent = x.parent;
-    if (isNil(x.parent)) {
+    if (isNodeNil(x.parent)) {
       this.root = y;
     } else if (x === x.parent.left) {
       x.parent.left = y;
@@ -99,7 +101,7 @@ class RBTree {
     x.left = y.right;
     y.right.parent = x;
     y.parent = x.parent;
-    if (isNil(x.parent)) {
+    if (isNodeNil(x.parent)) {
       this.root = y;
     } else if (x.isLeftNode()) {
       x.parent.left = y;
@@ -110,7 +112,7 @@ class RBTree {
     x.parent = y;
   }
 
-  insert(key: any, val: any) {
+  insert(key: any, val?: any) {
     const n = this.newNode();
     n.key = key;
     n.val = val;
@@ -121,10 +123,14 @@ class RBTree {
     let x: RBNode, y: RBNode;
     y = this.newNil();
     x = this.root;
-    while (!isNil(x)) {
+    while (!isNodeNil(x)) {
       y = x;
       if (this._eqkey(z.key, x.key)) {
-        x.val = z.val;
+        if (this.merger) {
+          x.val = this.merger(x.val, z.val);
+        } else {
+          x.val = z.val;
+        }
         return;
       } else if (this._ltkey(z.key, x.key)) {
         x = x.left;
@@ -133,7 +139,7 @@ class RBTree {
       }
     }
     z.parent = y;
-    if (isNil(y)) {
+    if (isNodeNil(y)) {
       this.root = z;
     } else if (this._ltkey(z.key, y.key)) {
       y.left = z;
@@ -184,7 +190,7 @@ class RBTree {
 
   successor(z: RBNode) {
     let p = z.left;
-    while (!isNil(p.right)) {
+    while (!isNodeNil(p.right)) {
       p = p.right;
     }
     return p;
@@ -213,7 +219,7 @@ class RBTree {
   findNode(key: any) {
     let ret;
     let n = this.root;
-    while (!isNil(n)) {
+    while (!isNodeNil(n)) {
       if (this._eqkey(n.key, key)) {
         ret = n;
         break;
@@ -249,13 +255,13 @@ class RBTree {
     let x;
     let y;
 
-    if (isNil(z.left) || isNil(z.right)) {
+    if (isNodeNil(z.left) || isNodeNil(z.right)) {
       y = z;
     } else {
       y = this.successor(z);
     }
 
-    if (!isNil(y.left)) {
+    if (!isNodeNil(y.left)) {
       x = y.left;
     } else {
       x = y.right;
@@ -263,7 +269,7 @@ class RBTree {
 
     x.parent = y.parent;
 
-    if (isNil(y.parent)) {
+    if (isNodeNil(y.parent)) {
       this.root = x;
     } else if (y.isLeftNode()) {
       y.parent.left = x;
@@ -336,6 +342,50 @@ class RBTree {
       }
     }
     x.color = RBColor.BLACK;
+  }
+
+  lowerBoundNode(k: any): RBNodeOrNull {
+    let c = this.root;
+    let n = null;
+    while (!isNodeNil(c)) {
+      if (c.key === k) {
+        return c;
+      }
+      if (this._gtkey(c.key, k)) {
+        n = c;
+        c = c.left;
+      } else {
+        c = c.right;
+      }
+    }
+    return n;
+  }
+
+  lowerBound(k:any):any {
+    const n = this.lowerBoundNode(k);
+    return n && n.val;
+  }
+
+  upperBound(k:any) {
+    const n = this.upperBoundNode(k);
+    return n && n.val;
+  }
+
+  upperBoundNode(k: any): RBNodeOrNull {
+    let c = this.root;
+    let n = null;
+    while (!isNodeNil(c)) {
+      if (c.key === k) {
+        return c;
+      }
+      if (this._gtkey(c.key, k)) {
+        c = c.left;
+      } else {
+        n = c;
+        c = c.right;
+      }
+    }
+    return n;
   }
 
   visualize(format: FormatFunc, size: SizeFunc) {

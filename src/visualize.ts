@@ -34,7 +34,7 @@ function infix(root: RBNode, order = [0]) {
     return;
   }
   infix(root.left, order);
-  root.order = ++order[0];
+  (root as any).order = ++order[0];
   infix(root.right, order);
 }
 
@@ -50,9 +50,9 @@ export default function visualize(n: RBNode, format: FormatFunc, size: SizeFunc)
     const nq = [];
     for (const currentElement of queue) {
       if (!prevEl) {
-        l += (' '.repeat(maxWidth).repeat(currentElement.order - 1));
+        l += (' '.repeat(maxWidth).repeat((currentElement as any).order - 1));
       } else {
-        l += (' '.repeat(maxWidth).repeat(currentElement.order - prevEl.order - 1));
+        l += (' '.repeat(maxWidth).repeat((currentElement as any).order - (prevEl as any).order - 1));
       }
       prevEl = currentElement;
       l += ' '.repeat(maxWidth - size(currentElement)) + format(currentElement);
