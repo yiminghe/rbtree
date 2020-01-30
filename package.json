@@ -1,6 +1,6 @@
 {
   "name": "@yiminghe/rbtree",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "red-black-tree",
   "homepage": "http://github.com/yiminghe/rbtree",
   "author": "yiminghe@gmail.com",
