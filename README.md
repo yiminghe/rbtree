@@ -45,6 +45,7 @@ console.log(tree.find(11)) // => 'b'
 ### constructor(sorter:(aKey, bKey)=>number, merger:(aVal,bVal)=>any)
 
 sort function: aKey>bKey:>0, aKey==bKey:0, aKey<bKey:<0, sorter defaults to: (a,b)=>a-b;
+
 merger function: how to merge val when key is the same, defaults to override with new val
 
 #### insert(key:any,value:any)
