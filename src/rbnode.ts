@@ -3,7 +3,7 @@ export enum RBColor {
   BLACK
 }
 
-export type RBNodeOrNull = RBNode | null;
+export type RBNodeOrNull = RBNode | null | undefined;
 
 export function isNodeNil(n: RBNodeOrNull): boolean {
   return !!(n && n.key === null);

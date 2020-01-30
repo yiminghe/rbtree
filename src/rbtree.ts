@@ -346,7 +346,7 @@ class RBTree {
 
   lowerBoundNode(k: any): RBNodeOrNull {
     let c = this.root;
-    let n = null;
+    let n = undefined;
     while (!isNodeNil(c)) {
       if (c.key === k) {
         return c;
@@ -373,7 +373,7 @@ class RBTree {
 
   upperBoundNode(k: any): RBNodeOrNull {
     let c = this.root;
-    let n = null;
+    let n = undefined;
     while (!isNodeNil(c)) {
       if (c.key === k) {
         return c;
