@@ -1,6 +1,6 @@
 {
   "name": "@yiminghe/rbtree",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "red-black-tree",
   "homepage": "http://github.com/yiminghe/rbtree",
   "author": "yiminghe@gmail.com",
@@ -11,21 +11,21 @@
   "@pika/pack": {
     "pipeline": [
       [
-        "@pika/plugin-standard-pkg",
+        "@pika/plugin-ts-standard-pkg"
+      ],
+      [
+        "pika-plugin-build-web-babel",
         {
-          "exclude": [
-            "__tests__/**/*"
-          ]
+          "format": "cjs",
+          "envName": "node",
+          "runtimeHelpers": true
         }
       ],
       [
-        "@pika/plugin-build-node"
-      ],
-      [
-        "pika-plugin-build-web-babel"
-      ],
-      [
-        "@pika/plugin-build-types"
+        "pika-plugin-build-web-babel",
+        {
+          "runtimeHelpers": true
+        }
       ],
       [
         "pika-plugin-clean-dist-src"
@@ -58,11 +58,10 @@
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/preset-env": "^7.9.0",
     "@babel/preset-typescript": "^7.8.3",
     "@pika/pack": "^0.5.0",
-    "@pika/plugin-build-node": "^0.6.0",
-    "@pika/plugin-build-types": "^0.6.0",
-    "@pika/plugin-standard-pkg": "^0.6.0",
+    "@pika/plugin-ts-standard-pkg": "^0.9.2",
     "@pika/types": "^0.6.0",
     "babel-jest": "^24.8.0",
     "chalk": "^3.0.0",
@@ -70,11 +69,12 @@
     "jest": "^24.8.0",
     "lint-staged": "^7.2.0",
     "np": "^5.0.3",
-    "pika-plugin-build-web-babel": "0.7.5",
+    "pika-plugin-build-web-babel": "0.8.4",
     "pika-plugin-clean-dist-src": "^0.1.1",
     "pre-commit": "^1.2.2",
     "prettier": "^1.11.1",
-    "rollup-plugin-node-resolve": "^5.2.0"
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "typescript": "3.x"
   },
   "lint-staged": {
     "*.{js, ts}": [
